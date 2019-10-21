@@ -15,6 +15,30 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </head>
     <body>
+        <nav class="navbar navbar-expand-sm navbar-light bg-light" style="min-height:80px;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav" style="margin-left:10rem;">
+                        <a class="navbar-brand" href="/">PACE Bank</a>
+                        <li class="nav-item">
+                            <a href="/dashboard/" class="nav-link" style="font-size:1.1rem;">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/products/" class="nav-link" style="font-size:1.1rem;">Products</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto" style="margin-right:10rem;">
+                        <li class="nav-item">
+                            <a href="/profile/" class="nav-link" style="font-size:1.1rem;">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/logout/" class="nav-link" style="font-size:1.1rem;">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         <div class="container">
             {% if messages %}
                 {% for message in messages %}

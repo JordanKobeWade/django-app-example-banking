@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'navbase.html' %}
 {% load crispy_forms_tags %}
 
 {% block title %}
-<title>Complete Profile</title>
+<title>Upload</title>
 {% endblock %}
 
 {% block content %}
@@ -10,11 +10,12 @@
     <div class="row mb-3 mt-5 justify-content-center">
         <div class="card" style="width:30rem;">
             <div class="card-body">
-                <p style="margin-bottom:2rem;font-size:1.5rem">Please complete your profile.</p>
-                <form method="post" action="{{ request.path }}">
+                <p style="margin-bottom:2rem;font-size:1.5rem">
+                    Please only upload PNG, PDF, or JPEG
+                </p>
+                <form method="post" enctype="multipart/form-data" action="{{ request.path }}">
                     {% csrf_token %}
                     {{ form | crispy}}
-                    <p>Format: YYYY-MM-DD</p>
                     <button class="btn btn-outline-success" type="submit">Submit</button>
                 </form>
             </div>

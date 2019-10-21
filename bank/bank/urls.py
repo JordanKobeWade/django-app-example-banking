@@ -18,16 +18,30 @@ from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic.base import RedirectView
-from accounts.views import register, dashboard, setup
+from accounts.views import (register, dashboard, setup, 
+    index, products, please_login, savings_page, checking_page,
+    moneymarket_page, cd_page, iracd_page, document_uploader)
 
 
 urlpatterns = [
-    path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('cd/', cd_page, name='cd'),
+    path('iracd/', iracd_page, name='iracd'),
+    path('checking/', checking_page, name='checking'),
     path('dashboard/', dashboard, name='dashboard'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('error/', please_login, name='error'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), 
+        name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), 
+        name='login'),
+    path('moneymarket/', moneymarket_page, name='moneymarket'),
+    path('products/', products, name='products'),
     # path('profile/', profile, name='profile'),
     path('profile/setup/', setup, name='setup'),
     path('register/', register, name='register'),
-    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico')))
+    path('savings/', savings_page, name='savings'),
+    path('upload/', document_uploader, name='upload'),
+    path('favicon.ico',
+        RedirectView.as_view(url=staticfiles_storage.url('favicon.ico')))
 ]

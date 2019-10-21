@@ -6,13 +6,29 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
 
+    def __str__(self):
+        return self.username
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=40)
-    zipcode = models.CharField(max_length=9)
-    birthdate = models.DateTimeField()
-    document = models.FileField(upload_to='uploads/')
+    zip_code = models.CharField(max_length=9)
+    birth_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.user.username
+
+class Document(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    one = models.FileField()
+    one_description = models.CharField(max_length=25)
+    two = models.FileField()
+    two_description = models.CharField(max_length=25)
+    accepted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.profile.user.username
 
 class Savings(models.Model):
     status_types = ('inactive', 'processing', 'active')
