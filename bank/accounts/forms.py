@@ -1,5 +1,6 @@
 from django import forms
-from accounts.models import CustomUser
+from django.forms import ModelForm
+from accounts.models import CustomUser, Profile
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class CustomUserCreationForm(UserCreationForm):
@@ -16,3 +17,9 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'email')
+
+class ProfileForm(ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['street_address', 'city', 'zipcode', 'birthdate']

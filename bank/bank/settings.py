@@ -131,7 +131,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media/'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'profile/setup/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

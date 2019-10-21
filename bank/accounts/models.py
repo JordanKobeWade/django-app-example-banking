@@ -5,13 +5,13 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    
+
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     city = models.CharField(max_length=40)
     zipcode = models.CharField(max_length=9)
-    birthdate = models.DateTimeField(default=timezone.now)
+    birthdate = models.DateTimeField()
     document = models.FileField(upload_to='uploads/')
 
 class Savings(models.Model):

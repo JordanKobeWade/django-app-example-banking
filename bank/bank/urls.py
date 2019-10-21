@@ -18,14 +18,16 @@ from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic.base import RedirectView
-from accounts.views import index, register
+from accounts.views import register, dashboard, setup
 
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('admin/', admin.site.urls),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('dashboard/', dashboard, name='dashboard'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    # path('profile/', profile, name='profile'),
+    path('profile/setup/', setup, name='setup'),
     path('register/', register, name='register'),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.ico')))
 ]
