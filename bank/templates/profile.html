@@ -1,0 +1,23 @@
+{% extends 'navbase.html' %}
+{% block title %}
+<title>Profile</title>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <p><b>Username:</b> {{ username }}</p>
+        <p><b>Email:</b> {{ email }}</p>
+        <p><b>First Name:</b> {{ first_name }}</p>
+        <p><b>Last Name:</b> {{ last_name }}</p>
+        <p><b>Street Address:</b> {{ street_address }}</p>
+        <p><b>City:</b> {{ city }}</p>
+        <p><b>Zip Code:</b> {{ zip_code }}</p> 
+        <p><b>Birth Date:</b> {{ birth_date }}</p>
+        <p>
+            <b>Document Status:</b> {{ document_status }}
+            <a href='/upload/'>upload</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

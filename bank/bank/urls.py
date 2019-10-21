@@ -18,7 +18,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic.base import RedirectView
-from accounts.views import (register, dashboard, setup, 
+from accounts.views import (register, dashboard, setup, profile,
     index, products, please_login, savings_page, checking_page,
     moneymarket_page, cd_page, iracd_page, document_uploader)
 
@@ -37,7 +37,7 @@ urlpatterns = [
         name='login'),
     path('moneymarket/', moneymarket_page, name='moneymarket'),
     path('products/', products, name='products'),
-    # path('profile/', profile, name='profile'),
+    path('profile/', profile, name='profile'),
     path('profile/setup/', setup, name='setup'),
     path('register/', register, name='register'),
     path('savings/', savings_page, name='savings'),

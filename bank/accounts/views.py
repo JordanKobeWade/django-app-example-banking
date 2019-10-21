@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from accounts.models import (Profile, Savings, Checking,
+from accounts.models import (Profile, Savings, Checking, Document,
     MoneyMarket, CertificateDeposit, CertificateDepositIRA)
 from accounts.forms import CustomUserCreationForm, ProfileForm, UploadForm
 from django.contrib import messages
@@ -105,6 +105,50 @@ def products(request):
     else:
         return redirect('error')
 
+def profile(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+        first_name = request.user.first_name
+        last_name = request.user.last_name
+        email = request.user.email
+        profile = Profile.objects.get(user=request.user)
+        street_address = profile.street_address
+        city = profile.city
+        zip_code = profile.zip_code
+        birth_date = profile.birth_date
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            document_status = document.accepted
+        else:
+            document_status = None
+
+        if document:
+            if document_status == True:
+                document_status = 'Accepted'
+            else:
+                document_status = 'Processing'
+        else:
+            document_status = 'No submissions'
+        
+        context = {'username':username,
+            'first_name':first_name,
+            'last_name':last_name,
+            'street_address':street_address,
+            'birth_date':birth_date,
+            'document_status':document_status,
+            'email':email,
+            'city':city,
+            'zip_code':zip_code,
+            }
+
+        return render(request, 'profile.html', context)
+    else:
+        return redirect('error')
+
 def document_uploader(request):
     if request.user.is_authenticated:
         if request.method =='POST':
@@ -118,7 +162,18 @@ def document_uploader(request):
                 return redirect('dashboard')
 
         else:
-            form = UploadForm()
+            profile = Profile.objects.get(user=request.user)
+        
+            try:
+                document = Document.objects.get(profile=profile)
+            except ObjectDoesNotExist:
+                document = None
+
+            if document:
+                messages.warning(request, 'You already submitted your documents')
+                return redirect('profile')
+            else:
+                form = UploadForm()
         return render(request, 'upload.html', {'form': form})
     else:
         return redirect('error')
