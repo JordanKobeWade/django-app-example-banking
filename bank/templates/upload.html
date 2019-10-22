@@ -13,6 +13,11 @@
                 <p style="margin-bottom:2rem;font-size:1.5rem">
                     Please only upload PNG, PDF, or JPEG
                 </p>
+                <p style="margin-bottom:0;">Please upload the following:</p>
+                <ul>
+                    <li>Driver's License</li>
+                    <li>Proof of Current Address (utility bill, mortgage statement, signed lease agreement, etc)</li>
+                </ul>
                 <form method="post" enctype="multipart/form-data" action="{{ request.path }}">
                     {% csrf_token %}
                     {{ form | crispy}}
