@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from accounts.models import CustomUser, Profile, Document
+from accounts.models import CustomUser, Profile, Document, Deposit
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class CustomUserCreationForm(UserCreationForm):
@@ -29,3 +29,10 @@ class UploadForm(ModelForm):
     class Meta:
         model = Document
         fields = ('one', 'one_description', 'two', 'two_description')
+
+class DepositForm(ModelForm):
+
+    class Meta:
+        model = Deposit
+        fields = ('amount',)
+

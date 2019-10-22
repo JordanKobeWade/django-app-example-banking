@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from accounts.models import (Profile, Savings, Checking, Document,
     MoneyMarket, CertificateDeposit, CertificateDepositIRA)
-from accounts.forms import CustomUserCreationForm, ProfileForm, UploadForm
+from accounts.forms import (CustomUserCreationForm, ProfileForm, 
+    UploadForm, DepositForm)
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
@@ -211,3 +212,57 @@ def iracd_page(request):
 
 def please_login(request):
     return render(request, 'pleaselogin.html')
+
+def open_savings(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            if document.accepted != True:
+                messages.warning(request, 'Documents are still being processed.')
+                return redirect('savings')
+            elif document.accepted == True:
+                if request.method == 'POST':
+                    form = DepositForm(request.POST)
+
+                    if form.is_valid():
+                        amount = form.cleaned_data.get('amount')
+                        if amount >= 500:
+                            instance = form.save(commit=False)
+                            instance.profile = Profile.objects.get(user=request.user)
+                            instance.account = 'savings'
+                            instance.save()
+
+                            created_account = Savings()
+                            created_account.balance = amount
+                            created_account.profile= Profile.objects.get(user=request.user)
+                            created_account.save()
+
+                            messages.success(request, 'Account Opened!')
+                            return redirect('dashboard')
+                        else:
+                            messages.warning(request, 'Minimum deposit not met. Please try again.')
+                            return redirect('savings')
+                else:
+                    profile = Profile.objects.get(user=request.user)
+
+                    try:
+                        savings = Savings.objects.get(profile=profile)
+                    except ObjectDoesNotExist:
+                        savings = None
+
+                    if savings:
+                        messages.warning(request, 'Account already exists.')
+                        return redirect('dashboard')
+                    else:
+                        form = DepositForm()
+                return render(request, 'product/opensavings.html', {'form': form})
+        else:
+            messages.warning(request, 'Please upload documents.')
+            return redirect('upload')
+    else:
+        return redirect('error')

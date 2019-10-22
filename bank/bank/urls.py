@@ -20,7 +20,8 @@ from django.urls import path, include
 from django.views.generic.base import RedirectView
 from accounts.views import (register, dashboard, setup, profile,
     index, products, please_login, savings_page, checking_page,
-    moneymarket_page, cd_page, iracd_page, document_uploader)
+    moneymarket_page, cd_page, iracd_page, document_uploader,
+    open_savings)
 
 
 urlpatterns = [
@@ -41,6 +42,7 @@ urlpatterns = [
     path('profile/setup/', setup, name='setup'),
     path('register/', register, name='register'),
     path('savings/', savings_page, name='savings'),
+    path('savings/open/', open_savings, name='opensavings'),
     path('upload/', document_uploader, name='upload'),
     path('favicon.ico',
         RedirectView.as_view(url=staticfiles_storage.url('favicon.ico')))

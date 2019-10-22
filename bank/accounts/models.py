@@ -31,44 +31,61 @@ class Document(models.Model):
         return self.profile.user.username
 
 class Savings(models.Model):
-    status_types = ('inactive', 'processing', 'active')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(default=timezone.now)
-    minimum = models.DecimalField(default=500, max_digits=9, decimal_places=2)
-    status = models.CharField(max_length=10, default=status_types[0])
 
+    class Meta:
+        verbose_name_plural = "savings"
+
+    def __str__(self):
+        return self.profile.user.username
+    
 class Checking(models.Model):
-    status_types = ('inactive', 'processing', 'active')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(default=timezone.now)
-    minimum = models.DecimalField(default=500, max_digits=9, decimal_places=2)
-    status = models.CharField(max_length=10, default=status_types[0])
 
+    def __str__(self):
+        return self.profile.user.username
+    
 class MoneyMarket(models.Model):
-    status_types = ('inactive', 'processing', 'active')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(default=timezone.now)
-    minimum = models.DecimalField(default=10000, max_digits=9, decimal_places=2)
-    status = models.CharField(max_length=10, default=status_types[0])
 
+    def __str__(self):
+        return self.profile.user.username
+    
 class CertificateDeposit(models.Model):
-    status_types = ('inactive', 'processing', 'active')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(default=timezone.now)
-    minimum = models.DecimalField(default=1000, max_digits=9, decimal_places=2)
-    status = models.CharField(max_length=10, default=status_types[0])
 
+    class Meta:
+        verbose_name_plural = "CDs"
+
+    def __str__(self):
+        return self.profile.user.username
+    
 class CertificateDepositIRA(models.Model):
-    status_types = ('inactive', 'processing', 'active')
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     balance = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(default=timezone.now)
-    minimum = models.DecimalField(default=1000, max_digits=9, decimal_places=2)
-    status = models.CharField(max_length=10, default=status_types[0])
 
+    class Meta:
+        verbose_name_plural = "IRA CDs"
+
+    def __str__(self):
+        return self.profile.user.username
+    
+class Deposit(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    account = models.CharField(max_length=25)
+    amount = models.DecimalField(default=0, max_digits=9, decimal_places=2)
+    deposit_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.profile.user.username
 
 
