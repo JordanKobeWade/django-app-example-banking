@@ -128,7 +128,7 @@ def profile(request):
 
         if document:
             if document_status == True:
-                document_status = 'Accepted'
+                document_status = 'Approved'
             else:
                 document_status = 'Processing'
         else:
@@ -183,6 +183,7 @@ def savings_page(request):
         return render(request, 'product/savings.html')
     else:
         return redirect('error')
+
 
 def checking_page(request):
     if request.user.is_authenticated:
