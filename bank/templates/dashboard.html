@@ -4,16 +4,115 @@
 {% endblock %}
 
 {% block content %}
-<div class="row mt-4 justify-content-center">
-    <div class="collapse" id="CollapseText">
-        <div class="card card-body text-center">
-            Test
-        </div>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <p style="font-size:1.5rem;">Welcome Back!</p>
+    </div>
+    <div class="row justify-content-center mt-2">
+        <p style="font-size:2.5rem;">Dashboard</p>
     </div>
 </div>
-{% if savings %}
-<p>{{ savings.balance }}</p>
-{% else %}
-<p>No savings account</p>
-{% endif %}
+<div class="accordion" id="accordionMain" style="margin-left:10rem;margin-right:10rem;margin-top:3rem;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, .25);">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h class="mb-0">
+                    <button class="btn btn-outline-success collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="width:10rem;margin-right:75rem;">
+                        Savings
+                    </button>
+                    <b>Status:</b> {{ savings_status }}
+                </h>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionMain">
+                <div class="card-body">
+                    {% if savings %}
+                        <p><b>Balance:</b></p> 
+                        <p style="font-size:2rem;">${{ savings.balance }}</p>
+                        <p><b>Account Number:</b> XXXX</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h class="mb-0">
+                    <button class="btn btn-outline-success collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width:10rem;margin-right:75rem;">
+                        Checking
+                    </button>
+                    <b>Status:</b> {{ checking_status }}
+                </h>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionMain">
+                <div class="card-body">
+                    {% if checking %}
+                        <p><b>Balance:</b></p> 
+                        <p style="font-size:2rem;">${{ checking.balance }}</p>
+                        <p><b>Account Number:</b> XXXX</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h class="mb-0">
+                    <button class="btn btn-outline-success collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width:10rem;margin-right:75rem;">
+                        Money Market
+                    </button>
+                    <b>Status:</b> {{ mm_status }}
+                </h>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionMain">
+                <div class="card-body">
+                    {% if moneymarket %}
+                        <p><b>Balance:</b></p> 
+                        <p style="font-size:2rem;">${{ moneymarket.balance }}</p>
+                        <p><b>Account Number:</b> XXXX</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFour">
+                <h class="mb-0">
+                    <button class="btn btn-outline-success collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="width:10rem;margin-right:75rem;">
+                        CD
+                    </button>
+                    <b>Status:</b> {{ cd_status }}
+                </h>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionMain">
+                <div class="card-body">
+                    {% if cd %}
+                        <p><b>Balance:</b></p> 
+                        <p style="font-size:2rem;">${{ cd.balance }}</p>
+                        <p><b>Account Number:</b> XXXX</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h class="mb-0">
+                    <button class="btn btn-outline-success collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width:10rem;margin-right:75rem;">
+                        IRA CD
+                    </button>
+                    <b>Status:</b> {{ cdira_status }}
+                </h>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionMain">
+                <div class="card-body">
+                    {% if cdira %}
+                        <p><b>Balance:</b></p> 
+                        <p style="font-size:2rem;">${{ cdira.balance }}</p>
+                        <p><b>Account Number:</b> XXXX</p>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

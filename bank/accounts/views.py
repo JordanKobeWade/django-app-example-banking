@@ -64,11 +64,41 @@ def dashboard(request):
             (moneymarket == None) and (cd == None) and (cdira == None)):
             return redirect('products')
 
+        if savings:
+            savings_status = "Active"
+        else:
+            savings_status = "Not Active"
+        
+        if checking:
+            checking_status = "Active"
+        else:
+            checking_status = "Not Active"
+
+        if moneymarket:
+            mm_status = "Active"
+        else:
+            mm_status = "Not Active"
+
+        if cd:
+            cd_status = "Active"
+        else:
+            cd_status = "Not Active"
+
+        if cdira:
+            cdira_status = "Active"
+        else:
+            cdira_status = "Not Active"
+
         context = {'savings': savings,
          'checking': checking,
          'moneymarket': moneymarket,
          'cd': cd,
          'cdira': cdira,
+         'savings_status': savings_status,
+         'checking_status': checking_status,
+         'mm_status': mm_status,
+         'cd_status': cd_status,
+         'cdira_status': cdira_status,
          }
 
         return render(request, 'dashboard.html', context=context)
@@ -261,6 +291,223 @@ def open_savings(request):
                     else:
                         form = DepositForm()
                 return render(request, 'product/opensavings.html', {'form': form})
+        else:
+            messages.warning(request, 'Please upload documents.')
+            return redirect('upload')
+    else:
+        return redirect('error')
+
+def open_checking(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            if document.accepted != True:
+                messages.warning(request, 'Documents are still being processed.')
+                return redirect('checking')
+            elif document.accepted == True:
+                if request.method == 'POST':
+                    form = DepositForm(request.POST)
+
+                    if form.is_valid():
+                        amount = form.cleaned_data.get('amount')
+                        if amount >= 500:
+                            instance = form.save(commit=False)
+                            instance.profile = Profile.objects.get(user=request.user)
+                            instance.account = 'checking'
+                            instance.save()
+
+                            created_account = Checking()
+                            created_account.balance = amount
+                            created_account.profile= Profile.objects.get(user=request.user)
+                            created_account.save()
+
+                            messages.success(request, 'Account Opened!')
+                            return redirect('dashboard')
+                        else:
+                            messages.warning(request, 'Minimum deposit not met. Please try again.')
+                            return redirect('checking')
+                else:
+                    profile = Profile.objects.get(user=request.user)
+
+                    try:
+                        checking = Checking.objects.get(profile=profile)
+                    except ObjectDoesNotExist:
+                        checking = None
+
+                    if checking:
+                        messages.warning(request, 'Account already exists.')
+                        return redirect('dashboard')
+                    else:
+                        form = DepositForm()
+                return render(request, 'product/openchecking.html', {'form': form})
+        else:
+            messages.warning(request, 'Please upload documents.')
+            return redirect('upload')
+    else:
+        return redirect('error')
+
+
+def open_moneymarket(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            if document.accepted != True:
+                messages.warning(request, 'Documents are still being processed.')
+                return redirect('moneymarket')
+            elif document.accepted == True:
+                if request.method == 'POST':
+                    form = DepositForm(request.POST)
+
+                    if form.is_valid():
+                        amount = form.cleaned_data.get('amount')
+                        if amount >= 1000:
+                            instance = form.save(commit=False)
+                            instance.profile = Profile.objects.get(user=request.user)
+                            instance.account = 'moneymarket'
+                            instance.save()
+
+                            created_account = MoneyMarket()
+                            created_account.balance = amount
+                            created_account.profile= Profile.objects.get(user=request.user)
+                            created_account.save()
+
+                            messages.success(request, 'Account Opened!')
+                            return redirect('dashboard')
+                        else:
+                            messages.warning(request, 'Minimum deposit not met. Please try again.')
+                            return redirect('moneymarket')
+                else:
+                    profile = Profile.objects.get(user=request.user)
+
+                    try:
+                        moneymarket = MoneyMarket.objects.get(profile=profile)
+                    except ObjectDoesNotExist:
+                        moneymarket = None
+
+                    if moneymarket:
+                        messages.warning(request, 'Account already exists.')
+                        return redirect('dashboard')
+                    else:
+                        form = DepositForm()
+                return render(request, 'product/openmoneymarket.html', {'form': form})
+        else:
+            messages.warning(request, 'Please upload documents.')
+            return redirect('upload')
+    else:
+        return redirect('error')
+
+def open_cd(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            if document.accepted != True:
+                messages.warning(request, 'Documents are still being processed.')
+                return redirect('cd')
+            elif document.accepted == True:
+                if request.method == 'POST':
+                    form = DepositForm(request.POST)
+
+                    if form.is_valid():
+                        amount = form.cleaned_data.get('amount')
+                        if amount >= 10000:
+                            instance = form.save(commit=False)
+                            instance.profile = Profile.objects.get(user=request.user)
+                            instance.account = 'cd'
+                            instance.save()
+
+                            created_account = CertificateDeposit()
+                            created_account.balance = amount
+                            created_account.profile= Profile.objects.get(user=request.user)
+                            created_account.save()
+
+                            messages.success(request, 'Account Opened!')
+                            return redirect('dashboard')
+                        else:
+                            messages.warning(request, 'Minimum deposit not met. Please try again.')
+                            return redirect('cd')
+                else:
+                    profile = Profile.objects.get(user=request.user)
+
+                    try:
+                        cd = CertificateDeposit.objects.get(profile=profile)
+                    except ObjectDoesNotExist:
+                        cd = None
+
+                    if cd:
+                        messages.warning(request, 'Account already exists.')
+                        return redirect('dashboard')
+                    else:
+                        form = DepositForm()
+                return render(request, 'product/opencd.html', {'form': form})
+        else:
+            messages.warning(request, 'Please upload documents.')
+            return redirect('upload')
+    else:
+        return redirect('error')
+
+def open_iracd(request):
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        try:
+            document = Document.objects.get(profile=profile)
+        except ObjectDoesNotExist:
+            document = None
+        
+        if document:
+            if document.accepted != True:
+                messages.warning(request, 'Documents are still being processed.')
+                return redirect('iracd')
+            elif document.accepted == True:
+                if request.method == 'POST':
+                    form = DepositForm(request.POST)
+
+                    if form.is_valid():
+                        amount = form.cleaned_data.get('amount')
+                        if amount >= 10000:
+                            instance = form.save(commit=False)
+                            instance.profile = Profile.objects.get(user=request.user)
+                            instance.account = 'iracd'
+                            instance.save()
+
+                            created_account = CertificateDepositIRA()
+                            created_account.balance = amount
+                            created_account.profile= Profile.objects.get(user=request.user)
+                            created_account.save()
+
+                            messages.success(request, 'Account Opened!')
+                            return redirect('dashboard')
+                        else:
+                            messages.warning(request, 'Minimum deposit not met. Please try again.')
+                            return redirect('iracd')
+                else:
+                    profile = Profile.objects.get(user=request.user)
+
+                    try:
+                        iracd = CertificateDepositIRA.objects.get(profile=profile)
+                    except ObjectDoesNotExist:
+                        iracd = None
+
+                    if iracd:
+                        messages.warning(request, 'Account already exists.')
+                        return redirect('dashboard')
+                    else:
+                        form = DepositForm()
+                return render(request, 'product/openiracd.html', {'form': form})
         else:
             messages.warning(request, 'Please upload documents.')
             return redirect('upload')

@@ -80,7 +80,7 @@ class CertificateDepositIRA(models.Model):
         return self.profile.user.username
     
 class Deposit(models.Model):
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     account = models.CharField(max_length=25)
     amount = models.DecimalField(default=0, max_digits=9, decimal_places=2)
     deposit_date = models.DateTimeField(default=timezone.now)

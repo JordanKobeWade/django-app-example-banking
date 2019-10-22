@@ -21,15 +21,19 @@ from django.views.generic.base import RedirectView
 from accounts.views import (register, dashboard, setup, profile,
     index, products, please_login, savings_page, checking_page,
     moneymarket_page, cd_page, iracd_page, document_uploader,
-    open_savings)
+    open_savings, open_checking, open_moneymarket, open_cd,
+    open_iracd)
 
 
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('cd/', cd_page, name='cd'),
+    path('cd/open/', open_cd, name='opencd'),
     path('iracd/', iracd_page, name='iracd'),
+    path('iracd/open/', open_iracd, name='openiracd'),
     path('checking/', checking_page, name='checking'),
+    path('checking/open/', open_checking, name='openchecking'),
     path('dashboard/', dashboard, name='dashboard'),
     path('error/', please_login, name='error'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), 
@@ -37,6 +41,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), 
         name='login'),
     path('moneymarket/', moneymarket_page, name='moneymarket'),
+    path('moneymarket/open/', open_moneymarket, name='openmoneymarket'),
     path('products/', products, name='products'),
     path('profile/', profile, name='profile'),
     path('profile/setup/', setup, name='setup'),
