@@ -22,7 +22,7 @@ from accounts.views import (register, dashboard, setup, profile,
     index, products, please_login, savings_page, checking_page,
     moneymarket_page, cd_page, iracd_page, document_uploader,
     open_savings, open_checking, open_moneymarket, open_cd,
-    open_iracd)
+    open_iracd, logout_auth, logout_redirect)
 
 
 urlpatterns = [
@@ -36,8 +36,8 @@ urlpatterns = [
     path('checking/open/', open_checking, name='openchecking'),
     path('dashboard/', dashboard, name='dashboard'),
     path('error/', please_login, name='error'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), 
-        name='logout'),
+    path('logout/', logout_auth, name='logout'),
+    path('logout/redirect/', logout_redirect, name='logoutredirect'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), 
         name='login'),
     path('moneymarket/', moneymarket_page, name='moneymarket'),

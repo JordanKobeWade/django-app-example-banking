@@ -4,10 +4,13 @@ from accounts.models import (Profile, Savings, Checking, Document,
 from accounts.forms import (CustomUserCreationForm, ProfileForm, 
     UploadForm, DepositForm)
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, logout
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect
+from django.views.decorators.cache import cache_control
 User = get_user_model()
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -26,6 +29,17 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+def logout_auth(request):
+    if request.user.is_authenticated:
+        logout(request)
+        return redirect('logoutredirect')
+    else:
+        return redirect('login')
+
+def logout_redirect(request):
+    return render(request, 'logoutredirect.html')
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def dashboard(request):
     if request.user.is_authenticated:
         user = request.user
@@ -103,8 +117,10 @@ def dashboard(request):
 
         return render(request, 'dashboard.html', context=context)
 
-    return redirect('error')
+    else:
+        return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def setup(request):
     if request.user.is_authenticated:
         if request.method =='POST':
@@ -130,12 +146,14 @@ def setup(request):
     else:
         return redirect('error')
     
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def products(request):
     if request.user.is_authenticated:
         return render(request, 'products.html')
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def profile(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -180,6 +198,7 @@ def profile(request):
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def document_uploader(request):
     if request.user.is_authenticated:
         if request.method =='POST':
@@ -209,31 +228,35 @@ def document_uploader(request):
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def savings_page(request):
     if request.user.is_authenticated:
         return render(request, 'product/savings.html')
     else:
         return redirect('error')
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def checking_page(request):
     if request.user.is_authenticated:
         return render(request, 'product/checking.html')
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def moneymarket_page(request):
     if request.user.is_authenticated:
         return render(request, 'product/moneymarket.html')
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def cd_page(request):
     if request.user.is_authenticated:
         return render(request, 'product/cd.html')
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def iracd_page(request):
     if request.user.is_authenticated:
         return render(request, 'product/iracd.html')
@@ -243,6 +266,7 @@ def iracd_page(request):
 def please_login(request):
     return render(request, 'pleaselogin.html')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def open_savings(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
@@ -297,6 +321,7 @@ def open_savings(request):
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def open_checking(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
@@ -351,7 +376,7 @@ def open_checking(request):
     else:
         return redirect('error')
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def open_moneymarket(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
@@ -406,6 +431,7 @@ def open_moneymarket(request):
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def open_cd(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
@@ -460,6 +486,7 @@ def open_cd(request):
     else:
         return redirect('error')
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def open_iracd(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user)
