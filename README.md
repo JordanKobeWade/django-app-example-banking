@@ -1,4 +1,4 @@
 # online banking
-A online banking website template & program flow 
+A online banking website early-prototype/template & program flow 
 
 Django-powered
